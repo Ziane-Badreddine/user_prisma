@@ -2,10 +2,8 @@ import db from "@/prisma/client";
 import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(
-  requst: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function PATCH(requst: NextRequest, props: { params: Promise<{ userId: string }> }) {
+  const params = await props.params;
   const user = await db.user.findUnique({
     where: {
       id: params.userId,
@@ -30,10 +28,8 @@ export async function PATCH(
   return NextResponse.json("story updated", { status: 201 });
 }
 
-export async function DELETE(
-  requst: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function DELETE(requst: NextRequest, props: { params: Promise<{ userId: string }> }) {
+  const params = await props.params;
   const user = await db.user.findUnique({
     where: {
       id: params.userId,

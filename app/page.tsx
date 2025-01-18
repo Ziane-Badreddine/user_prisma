@@ -6,6 +6,7 @@ import { columns } from "./_components/columns";
 export default async function Home() {
 
   const users = await db.user.findMany()
+  
   return (
     <>
       <div className="flex flex-col gap-10 items-center justify-center w-screen mt-10">

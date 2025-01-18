@@ -1,9 +1,19 @@
+
+import Edit from '@/app/_components/edit'
+import db from '@/prisma/client'
 import React from 'react'
 
-const page = ({ params }: { params: { userId: string }} ) => {
+const page = async ({params}: {params: {userId: string}}) => {
+
+    const user = await db.user.findUnique({
+        where:{
+            id: params.userId
+        }
+    })
+   
   return (
     <div>
-        {params.userId}
+        <Edit user={user} />
     </div>
   )
 }

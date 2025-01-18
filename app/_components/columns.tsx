@@ -9,6 +9,7 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export const columns: ColumnDef<user>[] = [
   {
@@ -73,7 +74,9 @@ export const columns: ColumnDef<user>[] = [
             )}
           </Button>
           <Button size={"icon"} className="flex items-center">
-            <Pencil className="h-5 w-5" />
+            <Link href={`/user/${user.id}`}>
+              <Pencil className="h-5 w-5" />
+            </Link>
           </Button>
         </div>
       );

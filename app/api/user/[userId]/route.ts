@@ -1,15 +1,15 @@
 import db from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function PATCH(
   requst: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
 
   const user = await db.user.findUnique({
     where: {
-      id: params.userId,
+      id: id,
     },
   });
 
@@ -17,28 +17,28 @@ export async function PATCH(
     return NextResponse.json("user not found", { status: 404 });
   }
 
-  const body = await requst.json()
+  const body = await requst.json();
 
   const userUpdated = await db.user.update({
     where: {
-      id: params.userId,
+      id: id,
     },
     data: {
-      ...body
-    }
+      ...body,
+    },
   });
 
   return NextResponse.json("story updated", { status: 201 });
 }
 
-
 export async function DELETE(
   requst: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const user = await db.user.findUnique({
     where: {
-      id: params.userId,
+      id: id,
     },
   });
 
@@ -48,7 +48,7 @@ export async function DELETE(
 
   const userDeleted = await db.user.delete({
     where: {
-      id: params.userId,
+      id: id,
     },
   });
 

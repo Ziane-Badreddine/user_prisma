@@ -1,19 +1,14 @@
-"use client"
+"use client";
 
-import { user } from "@prisma/client"
-import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
- 
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { user } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
+import { Loader, Pencil, Router, Trash2 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const columns: ColumnDef<user>[] = [
   {
@@ -31,44 +26,57 @@ export const columns: ColumnDef<user>[] = [
   {
     accessorKey: "createdAt",
     header: "Created At",
-    cell: (({row}) => {
-        const getDate = row.getValue("createdAt") as Date
+    cell: ({ row }) => {
+      const getDate = row.getValue("createdAt") as Date;
 
-        return (
-            <div>
-                {getDate.toDateString()}
-            </div>
-        )
-    })
+      return <div>{getDate.toDateString()}</div>;
+    },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const user = row.original
- 
+      const user = row.original;
+      const [isDeleted, setIsDeleted] = useState(false);
+      const router = useRouter();
+      const deleteUser = async () => {
+        try {
+          setIsDeleted(true);
+          const response = await axios.delete(`/api/user/${user.id}`);
+
+          if (response.status === 201) {
+            toast.success("user is created", {
+              className: "bg-green",
+            });
+            router.refresh();
+          }
+        } catch (error) {
+          toast.warning("something went wrong", {
+            className: "bg-rose-500 text-white",
+          });
+        } finally {
+          setIsDeleted(false);
+        }
+      };
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <div className="w-full flex items-center gap-x-2">
-                <Pencil className="h-5 w-5" />
-                Edit
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="w-full flex items-center gap-x-2">
-                <Trash2 className="h-5 w-5" />
-                Delete
-              </div>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            size={"icon"}
+            variant={"outline"}
+            className="flex items-center bg-red-600 "
+            onClick={deleteUser}
+          >
+            {isDeleted ? (
+              <Loader className="h-5 w-5 animate-spin" />
+            ) : (
+              <Trash2 className="h-5 w-5" />
+            )}
+          </Button>
+          <Button size={"icon"} className="flex items-center">
+            <Pencil className="h-5 w-5" />
+          </Button>
+        </div>
+      );
     },
   },
-]
+];

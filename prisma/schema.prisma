@@ -18,7 +18,6 @@ model user {
   name String
   prenom String
   age Int
-  skills String[]
 
   createdAt DateTime @default(now())
   updetedAt DateTime @updatedAt

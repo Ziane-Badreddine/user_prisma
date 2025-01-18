@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -63,10 +64,12 @@ export function DataTable<TData, TValue>({
             className="max-w-sm"
           />
         </div>
-        <Button>
-          <Plus />
-          Add
-        </Button>
+        <Link href={"/add"}>
+          <Button>
+            <Plus />
+            Add
+          </Button>
+        </Link>
       </div>
       <div className="rounded-md border">
         <Table>

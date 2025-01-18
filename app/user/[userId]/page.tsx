@@ -1,21 +1,21 @@
+import Edit from "@/app/_components/edit";
+import db from "@/prisma/client";
+import React from "react";
 
-import Edit from '@/app/_components/edit'
-import db from '@/prisma/client'
-import React from 'react'
+const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
 
-const page = async ({params}: {params: {userId: string}}) => {
+  const user = await db.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
 
-    const user = await db.user.findUnique({
-        where:{
-            id: params.userId
-        }
-    })
-   
   return (
     <div>
-        <Edit user={user} />
+      <Edit user={user} />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

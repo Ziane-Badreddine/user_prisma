@@ -21,5 +21,5 @@ export async function DELETE(
     },
   });
 
-  return NextResponse.json(userDeleted, { status: 201 });
+  return NextResponse.json("story deleted", { status: 201 });
 }

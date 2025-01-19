@@ -1,17 +1,12 @@
-import { DataTable } from "@/components/ui/data-table";
-import db from "@/prisma/client";
-import { columns } from "./_components/columns";
+import { redirect } from 'next/navigation'
+import React from 'react'
 
+const page = () => {
 
-export default async function Home() {
-
-  const users = await db.user.findMany()
-  
+    redirect("/user")
   return (
-    <>
-      <div className="flex flex-col gap-10 items-center justify-center w-screen mt-10">
-        <DataTable data={users} columns={columns} />
-      </div>
-    </>
-  );
+    <div>page</div>
+  )
 }
+
+export default page

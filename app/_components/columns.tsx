@@ -48,7 +48,7 @@ export const columns: ColumnDef<user>[] = [
             toast.success("user is created", {
               className: "bg-green",
             });
-            router.refresh();
+            router.push("/");
           }
         } catch (error) {
           toast.warning("something went wrong", {

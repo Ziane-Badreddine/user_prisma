@@ -22,8 +22,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { Plus } from "lucide-react";
+import { Plus, RefreshCcw } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,10 +49,14 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
+  const router = useRouter();
+  const handle = () => {
+    router.push("/");
+  };
 
   return (
     <div className="w-2/3">
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center justify-between gap-2 ">
         <div className="flex items-center py-4 w-full">
           <Input
             placeholder="Filter prenoms..."
@@ -64,12 +69,16 @@ export function DataTable<TData, TValue>({
             className="max-w-sm"
           />
         </div>
+
         <Link href={"/add"}>
           <Button>
             <Plus />
             Add
           </Button>
         </Link>
+        <Button onClick={handle}>
+          <RefreshCcw />
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
